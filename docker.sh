@@ -32,7 +32,7 @@ busybox_container=$app-busybox
 syslogng_container=$app-syslog-ng
 redis_container=$app-redis3.0.1
 mysql_container=$app-mysql5.7
-php_container=$app-php7.1.7
+php_container=$app-php7.2.2
 nginx_container_fpm=$app-nginx-fpm
 
 # container dir
