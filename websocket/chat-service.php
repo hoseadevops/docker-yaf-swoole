@@ -6,14 +6,14 @@
  * Time: 下午6:24
  */
 
-
 $service         = new swoole_websocket_server("0.0.0.0", 8085);
 
 $redis           = new Redis();
 
 $redis->connect('hexing-yaf-swoole-redis3.0.1', 6379);
 
-//$redis->flushAll();exit;
+#$redis->flushAll();exit;
+
 
 $service->on('open', function (swoole_websocket_server $service, $request){
     global $redis;
