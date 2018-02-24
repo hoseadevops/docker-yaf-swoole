@@ -7,12 +7,12 @@
 <body>
 <img id="receiver" style='width:640px;height:480px'/>
 <script type="text/javascript" charset="utf-8">
-    var ws = new WebSocket("ws://127.0.0.1:8888");
+    var ws = new WebSocket("ws://127.0.0.1:10841");
 
     var image = document.getElementById('receiver');
     ws.onopen = function () {
 
-    }
+    };
 
     ws.onmessage = function (data)
     {

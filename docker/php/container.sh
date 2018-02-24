@@ -6,6 +6,10 @@ function run_php()
 {
     local args='--restart=always'
 
+    #todo websocket test
+    args="$args -p 10841:8084"
+    args="$args -p 10851:8085"
+
     args="$args --cap-add SYS_PTRACE"
 
     args="$args -v $project_docker_runtime_dir/php:/var/log/php"

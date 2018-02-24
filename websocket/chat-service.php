@@ -6,34 +6,39 @@
  * Time: 下午6:24
  */
 
-//创建websocket服务器对象，监听0.0.0.0:9502端口
-$ws = new swoole_websocket_server("0.0.0.0", 9502);
 
-//监听WebSocket连接打开事件
-$ws->on('open', function ($ws, $request) {
-    $fd[] = $request->fd;
-    $GLOBALS['fd'][] = $fd;
-    //$ws->push($request->fd, "hello, welcome\n");
+$service         = new swoole_websocket_server("0.0.0.0", 8085);
+
+$redis           = new Redis();
+
+$redis->connect('hexing-yaf-swoole-redis3.0.1', 6379);
+
+//$redis->flushAll();exit;
+
+$service->on('open', function (swoole_websocket_server $service, $request){
+    global $redis;
+    echo "server: client open success with fd{$request->fd}\n";
+    $redis->sAdd('fd', $request->fd);
 });
 
 //监听WebSocket消息事件
-$ws->on('message', function ($ws, $frame)
-{
-    $msg = 'from' . $frame->fd . ":{$frame->data}\n";
-    //var_dump($GLOBALS['fd']);
-    //exit;
-    foreach ($GLOBALS['fd'] as $aa) {
-        foreach ($aa as $i) {
-            $ws->push($i, $msg);
-        }
+$service->on('message', function (swoole_websocket_server $service, $frame){
+    global $redis;
+
+    $fds = $redis->sMembers('fd');
+
+    $data = 'from' . $frame->fd . ":{$frame->data}\n";
+
+    foreach ($fds as $fd){
+        $service->push($fd, $data);
     }
-    // $ws->push($frame->fd, "server: {$frame->data}");
-    // $ws->push($frame->fd, "server: {$frame->data}");
 });
 
 //监听WebSocket连接关闭事件
-$ws->on('close', function ($ws, $fd) {
-    echo "client-{$fd} is closed\n";
+$service->on('close', function ($service, $fd){
+    echo "client {$fd} closed\n";
+    global $redis;
+    $redis->sRem('fd',$fd);
 });
 
-$ws->start();
+$service->start();

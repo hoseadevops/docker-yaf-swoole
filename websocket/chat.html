@@ -12,11 +12,8 @@
 </body>
 
 <script>
-    var msg = document.getElementById("msg");
-    var wsServer = 'ws://60.205.208.176:9502';
-    //调用websocket对象建立连接：
-    //参数：ws/wss(加密)：//ip:port （字符串）
-    var websocket = new WebSocket(wsServer);
+    var msg       = document.getElementById("msg");
+    var websocket = new WebSocket("ws://127.0.0.1:10851");
     //onopen监听连接打开
     websocket.onopen = function (evt) {
         //websocket.readyState 属性：

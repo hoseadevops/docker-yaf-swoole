@@ -10,18 +10,19 @@
 </video>
 
 <canvas id="output" style="display:none"></canvas>
+
 <script type="text/javascript" charset="utf-8">
-    var ws          = new WebSocket("ws://127.0.0.1:80831");
+    var ws          = new WebSocket("ws://127.0.0.1:10841");
     var back        = document.getElementById('output');
     var backContext = back.getContext('2d');
     var video       = document.getElementById("video");
     var success = function(stream)
     {
         video.src = window.URL.createObjectURL(stream);
-    }
+    };
     ws.onopen = function(){
         draw();
-    }
+    };
 
     var draw = function(){
         try{
@@ -37,7 +38,7 @@
             ws.send(back.toDataURL("image/jpeg", 0.5));
         }
         setTimeout(draw, 100);
-    }
+    };
 
     navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia ||
         navigator.mozGetUserMedia || navigator.msGetUserMedia;

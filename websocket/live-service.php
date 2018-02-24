@@ -10,7 +10,7 @@
 define('_ROOT_', dirname(__FILE__));
 
 ##  监听地址和端口
-$server = new swoole_websocket_server("0.0.0.0", 8888);
+$server = new swoole_websocket_server("0.0.0.0", 8084);
 
 ## 服务端接收连接事件
 $server->on('open', function (swoole_websocket_server $server, $request) {
