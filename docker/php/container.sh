@@ -44,6 +44,13 @@ function to_php()
     _send_cmd_to_php_container "cd $project_path; $cmd"
 }
 
+#todo websocket test
+function run_web_socket()
+{
+    local cmd='php websocket/chat-service.php'
+    _send_cmd_to_php_container "cd $project_path; $cmd";
+}
+
 function _send_cmd_to_php_container()
 {
     local cmd=$1
