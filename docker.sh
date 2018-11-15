@@ -24,7 +24,7 @@ busybox_image=hoseadevops/own-busybox
 syslogng_image=hoseadevops/own-syslog-ng
 redis_image=hoseadevops/own-redis:3.0.1
 mysql_image=hoseadevops/own-mysql:5.7
-php_image=hoseadevops/php:7.2.2
+php_image=hoseadevops/php:7.2.12
 nginx_image=hoseadevops/own-nginx:1.11
 
 # container
@@ -32,7 +32,7 @@ busybox_container=$app-busybox
 syslogng_container=$app-syslog-ng
 redis_container=$app-redis3.0.1
 mysql_container=$app-mysql5.7
-php_container=$app-php7.2.2
+php_container=$app-php7.2.12
 nginx_container_fpm=$app-nginx-fpm
 
 # container dir
