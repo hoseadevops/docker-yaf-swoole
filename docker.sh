@@ -16,6 +16,7 @@ app_env=$(read_kv_config .env.docker APP_ENV);                       # app env d
 mysql_port=$(read_kv_config .env.docker DB_PORT);                    # 数据库 外网端口  【docker 映射外网端口】
 nginx_port=$(read_kv_config .env.docker NGINX_PORT);                 # nginx 外网端口 【docker 映射外网端口】
 nginx_domain=$(read_kv_config .env.docker NGINX_DOMAIN);             # nginx 内网域名
+php_version=$(read_kv_config .env.docker PHP_VERSION);               # php 版本
 dk_nginx_root=$project_path;                                         # nginx root 目录
 
 app="$developer_name-$app_basic_name"
@@ -24,7 +25,7 @@ busybox_image=hoseadevops/own-busybox
 syslogng_image=hoseadevops/own-syslog-ng
 redis_image=hoseadevops/own-redis:3.0.1
 mysql_image=hoseadevops/own-mysql:5.7
-php_image=hoseadevops/php:7.2.12
+php_image="hoseadevops/php:$php_version"
 nginx_image=hoseadevops/own-nginx:1.11
 
 # container
@@ -32,7 +33,7 @@ busybox_container=$app-busybox
 syslogng_container=$app-syslog-ng
 redis_container=$app-redis3.0.1
 mysql_container=$app-mysql5.7
-php_container=$app-php7.2.12
+php_container="$app-php$php_version"
 nginx_container_fpm=$app-nginx-fpm
 
 # container dir
