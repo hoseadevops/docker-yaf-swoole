@@ -15,7 +15,7 @@
 # 4. xml, xmlrpc, wddx require libxml2-dev and libxslt-dev.
 # 5. Line `&& :\` is just for better reading and do nothing.
 
-FROM php:7.2.2-fpm
+FROM php:7.3.7-fpm
 
 RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 ADD sources.list /etc/apt/sources.list
@@ -26,7 +26,10 @@ RUN apt-get update
 ## Tool
 RUN apt-get install -y \
         wget \
+        libtinfo5 \
         vim \
+        libsasl2-2 \
+        libsasl2-dev \
         libmemcached-dev \
         cron \
         rsyslog
@@ -61,39 +64,43 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
         && docker-php-ext-install sysvshm \
         && docker-php-ext-install opcache
 
+#RUN pear config-set http_proxy http://127.0.0.1:1087
+#RUN pecl -vvv install yaf-3.0.8 && pecl install swoole-4.3.6 && pecl -vvv install redis-5.0.1 && pecl install memcached-3.1.3
+
 COPY ./yaf-3.0.8.tgz yaf-3.0.8.tgz
 COPY ./swoole-4.3.6.tgz swoole-4.3.6.tgz
 COPY ./redis-5.0.1.tgz redis-5.0.1.tgz
 COPY ./memcached-3.1.3.tgz memcached-3.1.3.tgz
 
 
-RUN mkdir -p /tmp/yaf \
-&& tar -zxvf yaf-3.0.8.tgz -C /tmp/yaf --strip-components=1 \
-&& rm yaf-3.0.8.tgz \
-&& docker-php-ext-configure /tmp/yaf --enable-yaf \
-&& docker-php-ext-install /tmp/yaf \
-&& rm -r /tmp/yaf
+    RUN mkdir -p /tmp/yaf \
+    && tar -zxvf yaf-3.0.8.tgz -C /tmp/yaf --strip-components=1 \
+    && rm yaf-3.0.8.tgz \
+    && docker-php-ext-configure /tmp/yaf --enable-yaf \
+    && docker-php-ext-install /tmp/yaf \
+    && rm -r /tmp/yaf
 
-RUN mkdir -p /tmp/swoole \
-&& tar -zxvf swoole-4.3.6.tgz -C /tmp/swoole --strip-components=1 \
-&& rm swoole-4.3.6.tgz \
-&& docker-php-ext-configure /tmp/swoole --enable-swoole \
-&& docker-php-ext-install /tmp/swoole \
-&& rm -r /tmp/swoole
+    RUN mkdir -p /tmp/swoole \
+    && tar -zxvf swoole-4.3.6.tgz -C /tmp/swoole --strip-components=1 \
+    && rm swoole-4.3.6.tgz \
+    && docker-php-ext-configure /tmp/swoole --enable-swoole \
+    && docker-php-ext-install /tmp/swoole \
+    && rm -r /tmp/swoole
 
-RUN mkdir -p /tmp/redis \
-&& tar -zxvf redis-5.0.1.tgz -C /tmp/redis --strip-components=1 \
-&& rm redis-5.0.1.tgz \
-&& docker-php-ext-configure /tmp/redis --enable-redis \
-&& docker-php-ext-install /tmp/redis \
-&& rm -r /tmp/redis
 
-RUN mkdir -p /tmp/memcached \
-&& tar -zxvf memcached-3.1.3.tgz -C /tmp/memcached --strip-components=1 \
-&& rm memcached-3.1.3.tgz \
-&& docker-php-ext-configure /tmp/memcached --enable-memcached \
-&& docker-php-ext-install /tmp/memcached \
-&& rm -r /tmp/memcached
+    RUN mkdir -p /tmp/redis \
+    && tar -zxvf redis-5.0.1.tgz -C /tmp/redis --strip-components=1 \
+    && rm redis-5.0.1.tgz \
+    && docker-php-ext-configure /tmp/redis --enable-redis \
+    && docker-php-ext-install /tmp/redis \
+    && rm -r /tmp/redis
+
+    RUN mkdir -p /tmp/memcached \
+    && tar -zxvf memcached-3.1.3.tgz -C /tmp/memcached --strip-components=1 \
+    && rm memcached-3.1.3.tgz \
+    && docker-php-ext-configure /tmp/memcached --enable-memcached \
+    && docker-php-ext-install /tmp/memcached \
+    && rm -r /tmp/memcached
 
 COPY .bashrc /root/
 
