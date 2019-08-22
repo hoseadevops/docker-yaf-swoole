@@ -29,7 +29,9 @@ RUN apt-get install -y \
         vim \
         libmemcached-dev \
         cron \
-        rsyslog
+        rsyslog \
+        libmagickwand-dev \
+        libmagickcore-dev
 
 ## GD
 RUN apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libpng-dev \
@@ -65,7 +67,14 @@ COPY ./yaf-3.0.8.tgz yaf-3.0.8.tgz
 COPY ./swoole-4.3.6.tgz swoole-4.3.6.tgz
 COPY ./redis-5.0.1.tgz redis-5.0.1.tgz
 COPY ./memcached-3.1.3.tgz memcached-3.1.3.tgz
+COPY ./imagick-3.4.4.tgz imagick-3.4.4.tgz
 
+RUN mkdir -p /tmp/imagick \
+&& tar -zxvf imagick-3.4.4.tgz -C /tmp/imagick --strip-components=1 \
+&& rm imagick-3.4.4.tgz \
+&& docker-php-ext-configure /tmp/imagick --enable-imagick \
+&& docker-php-ext-install /tmp/imagick \
+&& rm -r /tmp/imagick
 
 RUN mkdir -p /tmp/yaf \
 && tar -zxvf yaf-3.0.8.tgz -C /tmp/yaf --strip-components=1 \
